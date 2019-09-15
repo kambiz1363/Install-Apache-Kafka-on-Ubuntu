@@ -14,9 +14,9 @@ $ sudo adduser kafka sudo
 ```
 $ su -l kafka
 ```
-* Use curl to download the Kafka binaries:
+* Use wget to download the Kafka binaries:
 ```
-$ curl https://www-eu.apache.org/dist/kafka/2.3.0/kafka_2.12-2.3.0.tgz
+$ wget https://www-eu.apache.org/dist/kafka/2.3.0/kafka_2.12-2.3.0.tgz
 ```
 * Extract the archive you downloaded using the tar command:
 ```
