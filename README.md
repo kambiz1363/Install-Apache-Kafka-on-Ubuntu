@@ -58,7 +58,7 @@ Restart=on-abnormal
 [Install]
 WantedBy=multi-user.target
 ```
-* The new system units have been added, so let’s enable Apache Kafka to automatically run on boot, and then run the service.
+The new system units have been added, so let’s enable Apache Kafka to automatically run on boot, and then run the service.
 ```
 $ sudo systemctl enable kafka
 $ sudo systemctl start kafka
