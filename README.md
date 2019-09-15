@@ -22,3 +22,44 @@ $ curl https://www-eu.apache.org/dist/kafka/2.3.0/kafka_2.12-2.3.0.tgz
 ```
 $ tar -xzvf kafka_2.12-2.3.0.tgz
 ```
+* Create the unit file for zookeeper:
+```
+$ vim /etc/systemd/system/zookeeper.service
+
+[Unit]
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+User=kafka
+ExecStart=/home/kafka/kafka_2.12-2.3.0/bin/zookeeper-server-start.sh /home/kafka/kafka_2.12-2.3.0/config/zookeeper.properties
+ExecStop=/home/kafka/kafka_2.12-2.3.0/bin/zookeeper-server-stop.sh
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target
+```
+* create the systemd service file for kafka:
+```
+$ vim /etc/systemd/system/kafka.service
+
+[Unit]
+Requires=zookeeper.service
+After=zookeeper.service
+
+[Service]
+Type=simple
+User=kafka
+ExecStart=/bin/sh -c '/home/kafka/kafka_2.12-2.3.0/bin/kafka-server-start.sh /home/kafka/kafka_2.12-2.3.0/config/server.properties > /home/kafka/kafka_2.12-2.3.0/kafka.log 2>&1'
+ExecStop=/home/kafka/kafka_2.12-2.3.0/bin/kafka-server-stop.sh
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target
+```
+* The new system units have been added, so let’s enable Apache Kafka to automatically run on boot, and then run the service.
+```
+$ sudo systemctl enable kafka
+$ sudo systemctl start kafka
+```
