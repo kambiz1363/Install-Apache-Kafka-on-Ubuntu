@@ -63,3 +63,29 @@ The new system units have been added, so let’s enable Apache Kafka to automati
 $ sudo systemctl enable kafka
 $ sudo systemctl start kafka
 ```
+## Create a topic
+Let's create a topic named "First Topic" with a single partition and only one replica:
+```
+$ bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic FirstTopic
+```
+We can now see that topic if we run the list topic command:
+```
+$ bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+```
+## Send some messages
+Kafka comes with a command line client that will take input from a file or from standard input and send it out as messages to the Kafka cluster. By default, each line will be sent as a separate message.
+
+Run the producer and then type a few messages into the console to send to the server.
+```
+$ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic FirstTopic
+> This is a message
+> This is another message
+```
+## Start a consumer
+Kafka also has a command line consumer that will dump out messages to standard output.
+```
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+This is a message
+This is another message
+```
+If you have each of the above commands running in a different terminal then you should now be able to type messages into the producer terminal and see them appear in the consumer terminal.
